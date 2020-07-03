@@ -2,15 +2,17 @@
 
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
  * Articles
  *
  * @ORM\Table(name="articles", indexes={@ORM\Index(name="author_id", columns={"author_id"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
  */
 class Articles
 {
@@ -42,14 +44,14 @@ class Articles
      *
      * @ORM\Column(name="publishing_date", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
      */
-    private $publishingDate = 'CURRENT_TIMESTAMP';
+    private $publishingDate;
 
     /**
      * @var int
      *
      * @ORM\Column(name="number_likes", type="integer", nullable=false, options={"default" : 0})
      */
-    private $numberLikes = '0';
+    private $numberLikes = 0;
 
     /**
      * @var int|null
@@ -69,7 +71,19 @@ class Articles
 
     public function __construct() {
         $this->tagList = new ArrayCollection();
+        $this->publishingDate = new \DateTime();
     }
+
+	public static function loadValidatorMetadata(ClassMetadata $metadata){
+		$metadata->addPropertyConstraint('title', new Assert\NotBlank());
+		$metadata->addPropertyConstraint('content', new  Assert\NotBlank());
+		$metadata->addPropertyConstraint('author', new  Assert\NotBlank());
+	}
+
+	public function addLike() {
+		$this->numberLikes++;
+		$this->getAuthor()->addLike();
+	}
 
     public function getId(): ?int
     {

@@ -1,0 +1,43 @@
+{% extends "base.html.twig" %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
+
+{% block body %}
+    <h1>{{ article.getTitle() }}</h1>
+    <div>{{ article.getContent() }}</div><br>
+
+    <div>
+        {% if like_value == 'true' %}
+            <button type="button" class="btn btn-success btn-sm">
+                <i class="fa fa-thumbs-up"></i> like
+            </button>
+        {% else %}
+            <button onclick="likedPost({{ article.getId() }})"  type="button" class="btn btn-outline-success btn-sm" id="like_button">
+                <i class="fa fa-thumbs-up"></i> like
+            </button>
+        {% endif %}
+        <span id="total-votes">{{ article.getNumberLikes() }}</span>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        function likedPost(id) {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function () {
+                document.getElementById('like_button').classList.replace('btn-outline-success', 'btn-success');
+                document.getElementById('total-votes').innerText++;
+            }
+            xmlhttp.open('POST', '/article_like/' + id.toString(), true);
+            xmlhttp.send();
+
+            xmlhttp = new XMLHttpRequest();
+            xmlhttp.open('POST', 'setLikeCookie.php?q=' + id.toString(), true);
+            xmlhttp.send();
+        }
+    </script>
+{% endblock %}

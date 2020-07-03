@@ -2,15 +2,17 @@
 
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
  * Authors
  *
  * @ORM\Table(name="authors", uniqueConstraints={@ORM\UniqueConstraint(name="mail", columns={"mail"}), @ORM\UniqueConstraint(name="name", columns={"name"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\AuthorRepository")
  */
 class Authors
 {
@@ -28,7 +30,7 @@ class Authors
      *
      * @ORM\Column(name="number_likes", type="integer", nullable=false, options={"default" : 0})
      */
-    private $numberLikes = '0';
+    private $numberLikes = 0;
 
     /**
      * @var string|null
@@ -54,6 +56,15 @@ class Authors
     public function __construct() {
         $this->articleList = new ArrayCollection();
     }
+
+	public static function loadValidatorMetadata(ClassMetadata $metadata){
+		$metadata->addPropertyConstraint('mail', new Assert\NotBlank());
+		$metadata->addPropertyConstraint('name', new Assert\NotBlank());
+	}
+
+	public function addLike() {
+		$this->numberLikes++;
+	}
 
     public function getId(): ?int
     {
