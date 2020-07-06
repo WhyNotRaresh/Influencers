@@ -132,6 +132,9 @@
             "./config/packages/sensio_framework_extra.yaml"
         ]
     },
+    "snapappointments/bootstrap-select": {
+        "version": "v1.13.18"
+    },
     "symfony/asset": {
         "version": "v5.1.2"
     },

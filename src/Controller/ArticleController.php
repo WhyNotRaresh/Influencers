@@ -5,10 +5,13 @@ namespace App\Controller;
 
 use App\Entity\Articles;
 use App\Entity\Authors;
+use App\Entity\Tags;
 use App\Types\ArticleType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ArticleController extends AbstractController
@@ -29,7 +32,7 @@ class ArticleController extends AbstractController
 		$article = $this->getDoctrine()->getRepository(Articles::class)
 			->getById($articleID);
 
-		$like_value = $request->cookies->get('liked_post_'.$articleID);
+		$like_value = $request->cookies->get('liked-post-'.$articleID);
 
 		return $this->render('article/showArticleDetail.html.twig',
 		[
@@ -46,12 +49,18 @@ class ArticleController extends AbstractController
 		$article = $this->getDoctrine()->getRepository(Articles::class)
 			->getById($articleID);
 
-		if ($request->cookies->get('liked_post_'.$articleID) == null)
+		$response = new JsonResponse();
+
+		if ($request->cookies->get('liked-post-'.$articleID) == null) {
 			$article->addLike();
+			$this->getDoctrine()->getManager()->flush();
+			$response->setData(['likes' => $article->getNumberLikes()]);
+			$response->headers->setCookie(
+				new Cookie('liked-post-'.$articleID, 'true', strtotime('+10 years'), '/')
+			);
+		}
 
-		$this->getDoctrine()->getManager()->flush();
-
-		return $this->json(['likes' => $article->getNumberLikes()]);
+		return $response;
 	}
 
 	/**
@@ -59,7 +68,9 @@ class ArticleController extends AbstractController
 	 */
 	public function addPost(Request $request) {
 		$article = new Articles();
+
 		$form = $this->createForm(ArticleType::class, $article);
+		$form->add('submit', SubmitType::class);
 
 		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {

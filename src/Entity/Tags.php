@@ -10,9 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
  * Tags
  *
  * @ORM\Table(name="tags")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\TagRepository")
  */
-class Tags
+class Tags implements \JsonSerializable
 {
     /**
      * @var int
@@ -35,8 +35,8 @@ class Tags
      *
      * @ORM\ManyToMany(targetEntity="Articles", inversedBy="tagList")
      * @ORM\JoinTable(name="article_tags",
-     *  joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
-     *  inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id")})
+     *  joinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id")},
+     *  inverseJoinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")})
      */
     private $articleList;
 
@@ -86,4 +86,11 @@ class Tags
 
         return $this;
     }
+
+	public function jsonSerialize() {
+		return [
+			"id" => $this->id,
+			"tagName" => $this->tagName
+		];
+	}
 }
