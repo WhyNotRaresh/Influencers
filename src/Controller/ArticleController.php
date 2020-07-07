@@ -27,7 +27,7 @@ class ArticleController extends AbstractController
     }
 
 	/**
-	 * @Route("/article_{articleID}", name="showArticleDetail")
+	 * @Route("/article/{articleID}", name="showArticleDetail")
 	 */
 	public function showArticleDetail($articleID, Request $request) {
 		$article = $this->getDoctrine()->getRepository(Articles::class)
@@ -52,6 +52,7 @@ class ArticleController extends AbstractController
 
 		$response = new JsonResponse();
 
+		// setting cookie in response
 		if ($request->cookies->get('liked-post-'.$articleID) == null) {
 			$article->addLike();
 			$this->getDoctrine()->getManager()->flush();

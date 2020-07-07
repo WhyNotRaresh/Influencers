@@ -1,5 +1,9 @@
 {% extends "base.html.twig" %}
 
+{% block topauthors %}
+    <a href="{{ path('topAuthors') }}" class="nav-item nav-link nav-txt-style-active">View top authors</a>
+{% endblock %}
+
 {% block body %}
     <h1>Authors:</h1>
     {% for auth in authorArray %}

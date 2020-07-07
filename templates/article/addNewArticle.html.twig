@@ -5,6 +5,10 @@
     <link href="{{ asset('CSS/dropdown_search.css') }}" type="text/css" rel="stylesheet">
 {% endblock %}
 
+{% block addnewpost %}
+    <a href="{{ path('addPost') }}" class="nav-item nav-link nav-txt-style-active">Add new post</a>
+{% endblock %}
+
 {% block body %}
 
     <div id="see">Number of tags:</div>

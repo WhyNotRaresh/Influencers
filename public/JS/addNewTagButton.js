@@ -1,7 +1,7 @@
 function myFunction() {
     document.getElementById("myDropdown").classList.toggle("show");
 
-    var a = div.getElementsByTagName("a");
+    var a = document.getElementById("myDropdown").getElementsByTagName("a");
     for (i = 0 ; i < 3; i++) {
         a[i].style.display = "none";
     }

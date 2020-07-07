@@ -1,8 +1,36 @@
 {% extends "base.html.twig" %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('CSS/articlepreview.css') }}" type="text/css">
+{% endblock %}
+
+{% block allarticles %}
+    <a href="{{ path('articles') }}" class="nav-item nav-link nav-txt-style-active">All articles</a>
+{% endblock %}
+
 {% block body %}
-    <h1>Articles:</h1>
-    {% for art in articleArray %}
-        <li><a href="{{ path('showArticleDetail', { articleID: art.getId()}) }}">{{ art.getTitle() }}</a></li>
-    {% endfor %}
+    <div class="container d-flex">
+        <ul class="list-group list-group-flush">
+            {% for art in articleArray %}
+                <div>
+                    <li class="list-group-item list-item-style">
+                        <a href="{{ path('showArticleDetail', { articleID: art.getId()}) }}" class="list-item-text-style">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h3>{{ art.getTitle() }}</h3>
+                                <span class="badge badge-success badge-pill">{{ art.getNumberLikes() }}</span>
+                            </div>
+                            <p>
+                                {% if art.getContent()|length > 500 %}
+                                    {{ art.getContent()|slice(0,500) }}...
+                                {% else %}
+                                    {{ art.getContent()|slice(0,500) }}
+                                {% endif %}
+                            </p>
+                        </a>
+                    </li>
+                </div>
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock %}

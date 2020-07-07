@@ -11,29 +11,47 @@
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         {% endblock %}
          </head>
-    <body>
+    <body
+            {%  if app.request.cookies.get('dark-mode') == 'off' %}
+                style="background-color: #f1f1f1"
+            {% else %}
+                style="background-color: #2f302e"
+            {% endif %}
+    >
         {% block navbar %}
-            <nav class="navbar-nav navbar-dark sticky-top nav-fill w-100 navbar-expand-lg bg-dark">
+            <nav class="navbar-nav sticky-top nav-fill w-100 navbar-expand-lg">
                 <div class="navbar-collapse mx-auto" id="navbarSupportedContent">
-                    <ul class="nav nav-fill" style="width: 97%">
+                    <ul class="nav nav-fill" style="width: 96%">
                         <li class="nav-item">
-                            <a href="{{ path('articles') }}" class="nav-item nav-link nav-txt-style">Home</a>
+                            {% block allarticles %}
+                                <a href="{{ path('articles') }}" class="nav-item nav-link nav-txt-style">All articles</a>
+                            {% endblock %}
                         </li>
                         <li class="nav-item">
-                            <a href="{{ path('addPost') }}" class="nav-item nav-link nav-txt-color">Add new Post</a>
+                            {% block addnewpost %}
+                                <a href="{{ path('addPost') }}" class="nav-item nav-link nav-txt-style">Add new post</a>
+                            {% endblock %}
                         </li>
                         <li class="nav-item">
-                            <a href="{{ path('topAuthors') }}" class="nav-item nav-link nav-txt-color">View top authors</a>
+                            {% block topauthors %}
+                                <a href="{{ path('topAuthors') }}" class="nav-item nav-link nav-txt-style">View top authors</a>
+                            {% endblock %}
                         </li>
                     </ul>
-                    <ul class="nav justify-content-end">
+                    <ul class="nav nav-fill" style="width: 4%">
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle nav-txt-color" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle nav-txt-style" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                                 <i class="fa fa-cog" aria-hidden="true"></i>
                             </a>
-                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-style">
-                                <a class="dropdown-item nav-txt-color" href="#">
-                                    <i onclick="toggleDarkMode(this)" class="fa fa-toggle-off nav-txt-color">dark mode</i>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item nav-txt-style" href="#">
+                                    <i onclick="toggleDarkMode(this)"
+                                            {%  if app.request.cookies.get('dark-mode') == 'off' %}
+                                                class="fa fa-toggle-off nav-txt-style"
+                                            {% else %}
+                                               class="fa fa-toggle-on nav-txt-style"
+                                            {% endif %}
+                                    >dark mode</i>
                                 </a>
                             </div>
                         </li>

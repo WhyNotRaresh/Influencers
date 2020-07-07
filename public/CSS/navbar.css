@@ -1,20 +1,27 @@
-.nav-txt-style {
-    color: green;
-    font-size: medium;
-    font-family: Helvetica,Arial,sans-serif;
-    font-weight: 100;
-}
+/* navbar background */
+nav { background-color: #293b3b }
 
+/* text style for tab that is active */
 .nav-txt-style-active {
+    border-width: 3px;
+    border-style: solid;
+    border-image:
+            linear-gradient(
+                    to bottom,
+                    green,
+                    rgba(0, 0, 0, 0)
+            ) 1 100%;
+}
+
+/* text style for tab */
+.nav-txt-style, .nav-txt-style-active {
     color: green;
     font-size: medium;
     font-family: Helvetica,Arial,sans-serif;
     font-weight: 100;
-    background: -webkit-linear-gradient(green, darkgreen);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    padding: 1rem;
 }
 
-.dropdown-menu-style {
-    background-color: black;
-}
+/* settings dropdown menu style */
+.nav > li > .dropdown-menu { background-color: #293b3b; }
+.dropdown-menu > a:hover { background-color: darkslategray; }
