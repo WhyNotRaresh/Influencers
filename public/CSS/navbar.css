@@ -24,4 +24,5 @@ nav { background-color: #293b3b }
 
 /* settings dropdown menu style */
 .nav > li > .dropdown-menu { background-color: #293b3b; }
+.nav > li > a:hover { color: orange; }
 .dropdown-menu > a:hover { background-color: darkslategray; }

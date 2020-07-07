@@ -1,0 +1,25 @@
+.iframe-style {
+    overflow:hidden;
+    position : absolute;
+    z-index: 1;
+    top      : 0;
+    right    : 0;
+    height   : 100%;
+    width    : 100%;
+    border-width: 3px;
+    border-style: solid;
+    border-image:
+            linear-gradient(
+                    to bottom,
+                    green,
+                    rgba(0, 0, 0, 0)
+            ) 1 100%;
+}
+
+.h-iframe {
+    margin   : 10px;
+    top      : 5.87%;
+    height   : 700px;
+    width    : 100%;
+    z-index: 1;
+}

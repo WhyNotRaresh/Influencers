@@ -1,0 +1,12 @@
+.tag-style {
+    margin: 8px;
+    padding: 2px;
+    border-style: solid;
+    border-width: 1px 2px 1px 2px;
+    border-radius: 25px;
+    border-color: orangered;
+}
+
+.tag-list-style {
+    margin: 2px;
+}

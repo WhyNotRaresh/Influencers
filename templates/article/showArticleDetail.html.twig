@@ -1,20 +1,41 @@
 {% extends "base.html.twig" %}
 
-{% block body %}
-    <h1>{{ article.getTitle() }}</h1>
-    <div>{{ article.getContent() }}</div><br>
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('CSS/articledetails.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('CSS/tagstyle.css') }}" type="text/css">
+{% endblock %}
 
-    <div>
-        {% if like_value == 'true' %}
-            <button type="button" class="btn btn-success btn-sm">
-                <i class="fa fa-thumbs-up"></i> like
-            </button>
-        {% else %}
-            <button onclick="like(this)" type="button" class="btn btn-outline-success btn-sm" name="like_button" id="like_button">
-                <i class="fa fa-thumbs-up"></i> like
-            </button>
-        {% endif %}
-        <span id="total-votes">{{ article.getNumberLikes() }}</span>
+{% block navbar %}
+    <div class="d-flex w-100 head-style sticky-top">
+        {{ article.getTitle() }}
+    </div>
+{% endblock %}
+
+{% block body %}
+    <ul class="list-inline align-items-center tag-list-style">
+        {% for tag in article.getTagList() %}
+            <li class="list-inline-item tag-style text-style">
+                <div style="margin: 2px;">{{ tag.getTagName() }}</div>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <div class="text-style">{{ article.getContent() }}</div><br>
+
+    <div class="d-flex flex-fill justify-content-between" style="margin: 5px">
+        <div>
+            {% if like_value == 'true' %}
+                <button type="button" class="btn btn-success btn-sm">
+                    <i class="fa fa-thumbs-up"></i> like
+                </button>
+            {% else %}
+                <button onclick="like(this, {{ article.getId() }})" type="button" class="btn btn-outline-success btn-sm" name="like_button" id="like_button">
+                    <i class="fa fa-thumbs-up"></i> like
+                </button>
+            {% endif %}
+        </div>
+        <div id="total-votes" class="align-self-end text-style">{{ article.getNumberLikes() }}</div>
     </div>
 {% endblock %}
 

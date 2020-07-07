@@ -43,7 +43,7 @@ class ArticleController extends AbstractController
 	}
 
 	/**
-	 * @Route("/article_like/{articleID}", name="like")
+	 * @Route("/article/like/{articleID}", name="like")
 	 */
 	public function postLike($articleID, Request $request) {
 		// adding the like to the DB
