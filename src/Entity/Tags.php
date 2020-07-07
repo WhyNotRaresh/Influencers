@@ -5,6 +5,8 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Tags
@@ -43,6 +45,24 @@ class Tags implements \JsonSerializable
     public function __construct() {
         $this->articleList = new ArrayCollection();
     }
+
+	public static function loadValidatorMetadata(ClassMetadata $metadata){
+		$metadata->addPropertyConstraint('id', new Assert\NotBlank());
+		$metadata->addPropertyConstraint('tagName', new  Assert\NotBlank());
+	}
+
+	public function jsonSerialize() {
+		return [
+			"id" => $this->id,
+			"tagName" => $this->tagName
+		];
+	}
+
+	public function setId(int $id): ?self
+	{
+		$this->id = $id;
+		return $this;
+	}
 
     public function getId(): ?int
     {
@@ -86,11 +106,4 @@ class Tags implements \JsonSerializable
 
         return $this;
     }
-
-	public function jsonSerialize() {
-		return [
-			"id" => $this->id,
-			"tagName" => $this->tagName
-		];
-	}
 }

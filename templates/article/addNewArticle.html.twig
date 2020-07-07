@@ -2,67 +2,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <style>
-        .dropbtn {
-            background-color: #4CAF50;
-            color: white;
-            padding: 16px;
-            font-size: 16px;
-            border: none;
-            cursor: pointer;
-        }
-
-        /* Dropdown button on hover & focus */
-        .dropbtn:hover, .dropbtn:focus {
-            background-color: #3e8e41;
-        }
-
-        /* The search field */
-        #myInput {
-            box-sizing: border-box;
-            background-image: url('searchicon.png');
-            background-position: 14px 12px;
-            background-repeat: no-repeat;
-            font-size: 16px;
-            padding: 14px 20px 12px 45px;
-            border: none;
-            border-bottom: 1px solid #ddd;
-        }
-
-        /* The search field when it gets focus/clicked on */
-        #myInput:focus {outline: 3px solid #ddd;}
-
-        /* The container <div> - needed to position the dropdown content */
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        /* Dropdown Content (Hidden by Default) */
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #f6f6f6;
-            min-width: 230px;
-            border: 1px solid #ddd;
-            z-index: 1;
-        }
-
-        /* Links inside the dropdown */
-        .dropdown-content a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-        }
-
-        /* Change color of dropdown links on hover */
-        .dropdown-content a:hover {background-color: #f1f1f1}
-
-        /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
-        .show {display:block;}
-    </style>
-
+    <link href="{{ asset('CSS/dropdown_search.css') }}" type="text/css" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
@@ -87,7 +27,7 @@
         <button onclick="myFunction()" class="dropbtn"> Add a tag </button>
         <div id="myDropdown" class="dropdown-content">
             <input type="text" placeholder="Search for tag.." id="myInput" onkeyup="filterFunction()">
-            <a class="add-another-collection-widget" data-list-selector="#tags-fields-list" onclick="setTag(this)" href=""></a>
+            <a class="add-another-collection-widget" data-list-selector="#tags-fields-list" href=""></a>
             <a class="add-another-collection-widget" data-list-selector="#tags-fields-list" href=""></a>
             <a class="add-another-collection-widget" data-list-selector="#tags-fields-list" href=""></a>
         </div>
@@ -98,60 +38,22 @@
 
 {% block javascripts %}
     {{ parent() }}
-
+    <script src="{{ asset('JS/addNewTagButton.js') }}" type="text/javascript"></script>
     <script>
-        function myFunction() {
-            document.getElementById("myDropdown").classList.toggle("show");
-        }
-    </script>
-    
-    <script>
-        function filterFunction() {
-            var input, filter, a, i, txt, tagList;
-            input = document.getElementById("myInput");
-            filter = input.value.toLowerCase();
-            div = document.getElementById("myDropdown");
-            a = div.getElementsByTagName("a");
-            txt = input.value;
-
-            if (txt != '') {
-                var xmlhttp = new XMLHttpRequest();
-                xmlhttp.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        tagList = JSON.parse(this.responseText);
-                    }
-                }
-                xmlhttp.open('GET', '/get/tags/' + txt, false);
-                xmlhttp.send();
-            } else {
-                for (i = 0 ; i < 3; i++) {
-                    a[i].style.display = "none";
-                }
-                return;
-            }
-
-            for (i = 0; i < tagList.length; i++) {
-                a[i].style.display = "";
-                a[i].innerText = tagList[i].tagName;
-                a[i].href = "#" + tagList[i].id.toString() + "__" + tagList[i].tagName + "__";
-            }
-            for ( ; i < 3; i++) {
-                a[i].style.display = "none";
-            }
-        }
-    </script>
-
-    <script>
-        // add-collection-widget.js
         $(document).ready(function () {
             $('.add-another-collection-widget').click(function (e) {
                 var list = $($(this).attr('data-list-selector'));
                 var counter = list.data('widget-counter') || list.children().length;
 
-                // grab the prototype template
-                var newWidget = list.attr('data-prototype');
+                // parse href or <a> tag clicked
+                var nameID = parseNameId($(this).attr('href'));
+                document.getElementById('see').innerText = nameID.toString();
 
+                // creating new widget
+                var newWidget = list.attr('data-prototype');
                 newWidget = newWidget.replace(/__name__/g, counter);
+                newWidget = newWidget.replace(/__value__/g, nameID[1]);
+                newWidget = newWidget.replace(/-200/g, parseInt(nameID[0]));
                 counter++;
                 list.data('widget-counter', counter);
 
@@ -160,6 +62,13 @@
                 newElem.appendTo(list);
             });
         });
+
+        function parseNameId(link) {
+            var start = link.indexOf('#'), sep = link.indexOf('__#');
+            var id = link.slice(start + 1, sep), name = link.slice(sep + 3);
+
+            return [id, name];
+        }
     </script>
 
 {% endblock %}

@@ -1,9 +1,5 @@
 {% extends "base.html.twig" %}
 
-{% block stylesheets %}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-{% endblock %}
-
 {% block body %}
     <h1>{{ article.getTitle() }}</h1>
     <div>{{ article.getContent() }}</div><br>
@@ -24,22 +20,5 @@
 
 {% block javascripts %}
     {{ parent() }}
-
-    <script>
-        function like(btn) {
-            if (btn.classList.contains('btn-outline-success')) {
-                var xmlhttp = new XMLHttpRequest();
-                var id = "{{ article.getId() }}";
-                xmlhttp.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        var jsonResponse = JSON.parse(this.response);
-                        btn.classList.replace('btn-outline-success', 'btn-success');
-                        document.getElementById('total-votes').innerText = jsonResponse.likes;
-                    }
-                }
-                xmlhttp.open('GET', '/article_like/' + id, true);
-                xmlhttp.send();
-            }
-        }
-    </script>
+    <script src="{{ asset('JS/likeButton.js') }}"></script>
 {% endblock %}

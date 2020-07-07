@@ -26,9 +26,9 @@ class Authors
     private $id;
 
     /**
-     * @var int
+     * @var float
      *
-     * @ORM\Column(name="number_likes", type="integer", nullable=false, options={"default" : 0})
+     * @ORM\Column(name="number_likes", type="float", nullable=false, options={"default" : 0})
      */
     private $numberLikes = 0;
 
@@ -62,6 +62,16 @@ class Authors
 		$metadata->addPropertyConstraint('name', new Assert\NotBlank());
 	}
 
+	public function resetNewPost(): ?self {
+    	$length = count($this->articleList);
+    	if ($length == 0) return $this;
+
+    	$this->numberLikes *= 0.9;
+    	$this->numberLikes += $this->articleList[$length - 1]->getNumberLikes();
+
+    	return $this;
+	}
+
 	public function addLike() {
 		$this->numberLikes++;
 	}
@@ -71,12 +81,12 @@ class Authors
         return $this->id;
     }
 
-    public function getNumberLikes(): ?int
+    public function getNumberLikes(): ?float
     {
         return $this->numberLikes;
     }
 
-    public function setNumberLikes(int $numberLikes): self
+    public function setNumberLikes(float $numberLikes): self
     {
         $this->numberLikes = $numberLikes;
 

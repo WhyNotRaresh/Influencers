@@ -7,6 +7,7 @@ use App\Entity\Articles;
 use App\Entity\Authors;
 use App\Entity\Tags;
 use App\Types\ArticleType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -70,19 +71,28 @@ class ArticleController extends AbstractController
 		$article = new Articles();
 
 		$form = $this->createForm(ArticleType::class, $article);
-		$form->add('submit', SubmitType::class);
+		$form
+			->add('submit', SubmitType::class);
 
 		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {
 
+			// getting author from db
 			$author = $this->getDoctrine()->getRepository(Authors::class)
 				->getByMail($form['author']->get('mail')->getData());
 			$em = $this->getDoctrine()->getManager();
+
+			// manually setting article tags
+			$article->setTags(
+				$this->getDoctrine()->getRepository(Tags::class)
+				->getAllById($form['tagList']->getData())
+			);
 
 			if ($author != null) {
 				//mail already in db
 				if ($author->getName() == $form['author']->get('name')->getData()) {
 					// all good
+					$author->resetNewPost();
 					$article->setAuthor($author);
 					$em->persist($article);
 					$em->flush();

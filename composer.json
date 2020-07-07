@@ -20,7 +20,8 @@
         "symfony/twig-pack": "^1.0",
         "symfony/validator": "5.1.*",
         "symfony/yaml": "5.1.*",
-        "twbs/bootstrap": "^4.5"
+        "twbs/bootstrap": "^4.5",
+      "ext-json": "*"
     },
     "require-dev": {
         "symfony/maker-bundle": "^1.19"

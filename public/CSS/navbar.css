@@ -1,0 +1,20 @@
+.nav-txt-style {
+    color: green;
+    font-size: medium;
+    font-family: Helvetica,Arial,sans-serif;
+    font-weight: 100;
+}
+
+.nav-txt-style-active {
+    color: green;
+    font-size: medium;
+    font-family: Helvetica,Arial,sans-serif;
+    font-weight: 100;
+    background: -webkit-linear-gradient(green, darkgreen);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.dropdown-menu-style {
+    background-color: black;
+}

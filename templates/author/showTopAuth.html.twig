@@ -3,6 +3,6 @@
 {% block body %}
     <h1>Authors:</h1>
     {% for auth in authorArray %}
-        <li>{{ auth.getName() }} :: {{ auth.getMail() }}</li>
+        <li>{{ auth.getName() }} :: {{ auth.getMail() }} => rating :: {{ auth.getNumberLikes() }}</li>
     {% endfor %}
 {% endblock %}

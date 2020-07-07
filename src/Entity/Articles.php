@@ -80,6 +80,16 @@ class Articles
 		$metadata->addPropertyConstraint('author', new  Assert\NotBlank());
 	}
 
+	public function setTags(array $list): ?self {
+		$this->tagList = new ArrayCollection();
+
+		foreach ($list as $tag) {
+			$this->addTagList($tag);
+		}
+
+		return $this;
+	}
+
 	public function addLike() {
 		$this->numberLikes++;
 		$this->getAuthor()->addLike();
