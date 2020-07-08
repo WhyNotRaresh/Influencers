@@ -16,6 +16,7 @@ function toggleDarkMode(btn) {
             } else {
                 body.style.backgroundColor = '#f1f1f1';
             }
+            document.getElementsByName('myFrame')[0].contentWindow.location.href.reload();
         }
     }
     xmlhttp.open('GET', '/settings/darkmode/' + state, true);

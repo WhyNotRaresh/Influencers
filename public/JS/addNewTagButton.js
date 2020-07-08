@@ -39,3 +39,12 @@ function filterFunction() {
         a[i].style.display = "none";
     }
 }
+
+function checkTagDuplicate(tag) {
+    var inputs = document.getElementById('tags-fields-list').getElementsByTagName('input')
+    for (var i = 0; i < inputs.length; i++) {
+        if (! inputs[i].value.localeCompare(tag))
+            return false;
+    }
+    return true;
+}

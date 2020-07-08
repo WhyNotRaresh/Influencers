@@ -3,6 +3,7 @@
 {% block stylesheets %}
     {{ parent() }}
     <link href="{{ asset('CSS/dropdown_search.css') }}" type="text/css" rel="stylesheet">
+    <link href="{{ asset('CSS/formstyle.css') }}" type="text/css" rel="stylesheet">
 {% endblock %}
 
 {% block addnewpost %}
@@ -11,33 +12,35 @@
 
 {% block body %}
 
-    <div id="see">Number of tags:</div>
+    <div class="container-fluid w-75">
 
-    {{ form_start(form) }}
+        <h3>Enter your new post</h3>
+        {{ form_start(form) }}
+        <div class="d-flex justify-content-between">
+            <ul id="tags-fields-list" class="list-inline"
+                data-prototype="{{ form_widget(form.tagList.vars.prototype)|e }}"
+                data-widget-tags="{{ '<li class="list-inline-item"></li>'|e }}"
+                data-widget-counter="{{ form.tagList|length }}">
+                {% for tag in form.tagList %}
+                    <li class="list-inline-item">
+                        {{ form_errors(tag) }}
+                        {{ form_widget(tag) }}
+                    </li>
+                {% endfor %}
+            </ul>
 
-    <ul id="tags-fields-list"
-        data-prototype="{{ form_widget(form.tagList.vars.prototype)|e }}"
-        data-widget-tags="{{ '<li></li>'|e }}"
-        data-widget-counter="{{ form.tagList|length }}">
-        {% for tag in form.tagList %}
-            <li>
-                {{ form_errors(tag) }}
-                {{ form_widget(tag) }}
-            </li>
-        {% endfor %}
-    </ul>
-
-    <div class="dropdown">
-        <button onclick="myFunction()" class="dropbtn"> Add a tag </button>
-        <div id="myDropdown" class="dropdown-content">
-            <input type="text" placeholder="Search for tag.." id="myInput" onkeyup="filterFunction()">
-            <a class="add-another-collection-widget" data-list-selector="#tags-fields-list" href=""></a>
-            <a class="add-another-collection-widget" data-list-selector="#tags-fields-list" href=""></a>
-            <a class="add-another-collection-widget" data-list-selector="#tags-fields-list" href=""></a>
+            <div class="dropdown align-self-baseline">
+                <button onclick="myFunction()" class="dropbtn"> Add a tag </button>
+                <div id="myDropdown" class="dropdown-content">
+                    <input type="text" placeholder="Search for tag.." id="myInput" onkeyup="filterFunction()">
+                    <a class="add-another-collection-widget" data-list-selector="#tags-fields-list" href=""></a>
+                    <a class="add-another-collection-widget" data-list-selector="#tags-fields-list" href=""></a>
+                    <a class="add-another-collection-widget" data-list-selector="#tags-fields-list" href=""></a>
+                </div>
+            </div>
         </div>
+        {{ form_end(form) }}
     </div>
-
-    {{ form_end(form) }}
 {% endblock %}
 
 {% block javascripts %}
@@ -51,13 +54,18 @@
 
                 // parse href or <a> tag clicked
                 var nameID = parseNameId($(this).attr('href'));
-                document.getElementById('see').innerText = nameID.toString();
+
+                var inputs = document.getElementById('tags-fields-list').getElementsByTagName('input')
+                for (var i = 0; i < inputs.length; i++) {
+                    if (! inputs[i].value.localeCompare(nameID[0]))
+                        return;
+                }
 
                 // creating new widget
                 var newWidget = list.attr('data-prototype');
                 newWidget = newWidget.replace(/__name__/g, counter);
-                newWidget = newWidget.replace(/__value__/g, nameID[1]);
-                newWidget = newWidget.replace(/-200/g, parseInt(nameID[0]));
+                newWidget = newWidget.replace(/__value__/g, nameID[0]);
+                newWidget = newWidget.replace(/-200/g, parseInt(nameID[1]));
                 counter++;
                 list.data('widget-counter', counter);
 
@@ -71,7 +79,7 @@
             var start = link.indexOf('#'), sep = link.indexOf('__#');
             var id = link.slice(start + 1, sep), name = link.slice(sep + 3);
 
-            return [id, name];
+            return [name, id];
         }
     </script>
 

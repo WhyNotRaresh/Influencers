@@ -17,10 +17,15 @@ class TagType extends AbstractType
 		$builder
 			->add('tagName', TextType::class, [
 				'data' => '__value__',
-				'attr' => ['readonly' => true]
+				'label' => false,
+				'attr' => [
+					'readonly' => true,
+					'class' => 'tag-form-style',
+				]
 			])
 			->add('id', IntegerType::class, [
 				'data' => -200,
+				'label' => false,
 				'attr' => [
 					'hidden' => true,
 					'readonly' => true
