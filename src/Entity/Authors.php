@@ -67,7 +67,6 @@ class Authors
     	if ($length == 0) return $this;
 
     	$this->numberLikes *= 0.9;
-    	$this->numberLikes += $this->articleList[$length - 1]->getNumberLikes();
 
     	return $this;
 	}

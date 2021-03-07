@@ -7,7 +7,6 @@ use App\Entity\Articles;
 use App\Entity\Authors;
 use App\Entity\Tags;
 use App\Types\ArticleType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;

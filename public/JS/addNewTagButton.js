@@ -14,10 +14,10 @@ function filterFunction() {
     div = document.getElementById("myDropdown");
     a = div.getElementsByTagName("a");
 
-    if (txt.localeCompare("") != 0) {
+    if (txt.localeCompare("") !== 0) {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
+            if (this.status === 200) {
                 tagList = JSON.parse(this.responseText);
             }
         }

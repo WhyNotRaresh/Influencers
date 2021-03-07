@@ -21,17 +21,20 @@
         {% endfor %}
     </ul>
 
-    <div class="text-style">{{ article.getContent() }}</div><br>
+    <div class="text-style">
+        {{ article.getContent() }}<br>
+        > by: {{ article.getAuthor().getName() }}
+    </div><br>
 
     <div class="d-flex flex-fill justify-content-between" style="margin: 5px">
         <div>
             {% if like_value == 'true' %}
                 <button type="button" class="btn btn-success btn-sm">
-                    <i class="fa fa-thumbs-up"></i> like
+                    <i class="fa fa-heart"></i> like
                 </button>
             {% else %}
                 <button onclick="like(this, {{ article.getId() }})" type="button" class="btn btn-outline-success btn-sm" name="like_button" id="like_button">
-                    <i class="fa fa-thumbs-up"></i> like
+                    <i class="fa fa-heart"></i> like
                 </button>
             {% endif %}
         </div>

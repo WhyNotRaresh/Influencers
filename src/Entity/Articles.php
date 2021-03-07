@@ -76,6 +76,9 @@ class Articles
 
 	public static function loadValidatorMetadata(ClassMetadata $metadata){
 		$metadata->addPropertyConstraint('title', new Assert\NotBlank());
+		$metadata->addPropertyConstraint('title', new Assert\Length([
+			'min' => 10
+		]));
 		$metadata->addPropertyConstraint('content', new  Assert\NotBlank());
 		$metadata->addPropertyConstraint('author', new  Assert\NotBlank());
 	}
